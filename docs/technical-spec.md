@@ -113,13 +113,13 @@ pkg/                 # Public packages
 #### 4.1.1 Command Structure
 
 ```
-releasectl [global options] command [command options] [arguments...]
+grp-cli [global options] command [command options] [arguments...]
 ```
 
 #### 4.1.2 Global Commands
 
 ```
-releasectl
+grp-cli
   ├── init        # Initialize a new release plan
   ├── validate    # Validate a release plan
   ├── run         # Execute a release plan
@@ -153,7 +153,7 @@ var cfgFile string
 
 // rootCmd represents the base command
 var rootCmd = &cobra.Command{
-	Use:   "releasectl",
+	Use:   "grp-cli",
 	Short: "A flexible DevOps release automation tool",
 	Long: `A comprehensive CLI tool for DevOps to automate and manage complex release workflows
 across multiple environments and deployment targets including VMs, Docker containers, and Kubernetes.
@@ -172,7 +172,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.releasectl.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.grp-cli.yaml)")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "enable verbose output")
 	rootCmd.PersistentFlags().Bool("debug", false, "enable debug mode")
 	
@@ -194,9 +194,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".releasectl" (without extension)
+		// Search config in home directory with name ".grp-cli" (without extension)
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".releasectl")
+		viper.SetConfigName(".grp-cli")
 	}
 
 	// Read in environment variables that match
@@ -2124,8 +2124,8 @@ var Plugin KubernetesPlugin
 
 1. Initialize Go module:
    ```bash
-   mkdir releasectl
-   cd releasectl
+   mkdir grp-cli
+   cd grp-cli
    go mod init github.com/cuongtl1992/grp-cli
    ```
 
@@ -2149,7 +2149,7 @@ var Plugin KubernetesPlugin
    ```makefile
    .PHONY: build test clean plugins
 
-   BINARY=releasectl
+   BINARY=grp-cli
    PLUGINS_DIR=plugins
    VERSION=$(shell git describe --tags --always --dirty)
    BUILD_TIME=$(shell date +%FT%T%z)
@@ -2188,10 +2188,10 @@ var Plugin KubernetesPlugin
    RUN apk add --no-cache ca-certificates
 
    WORKDIR /app
-   COPY --from=builder /app/releasectl /app/
+   COPY --from=builder /app/grp-cli /app/
    COPY --from=builder /app/plugins /app/plugins
 
-   ENTRYPOINT ["/app/releasectl"]
+   ENTRYPOINT ["/app/grp-cli"]
    ```
 
 ### 6.3 Plugin Development Guidelines
@@ -2340,16 +2340,16 @@ rollback:
 
 ```bash
 # Validate the release plan
-releasectl validate release-plan.yaml
+grp-cli validate release-plan.yaml
 
 # Execute the release plan
-releasectl run release-plan.yaml --auto-rollback
+grp-cli run release-plan.yaml --auto-rollback
 
 # Check status of the release
-releasectl status <execution-id>
+grp-cli status <execution-id>
 
 # Manually trigger rollback
-releasectl rollback <execution-id>
+grp-cli rollback <execution-id>
 ```
 
 ### 7.3 Using the REST API
