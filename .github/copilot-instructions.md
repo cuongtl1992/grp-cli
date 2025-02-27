@@ -1,8 +1,3 @@
----
-description: 
-globs: 
-alwaysApply: true
----
 ## Go General Guidelines
 
 ### Basic Principles
