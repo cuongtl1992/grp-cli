@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: ReleasePlan
+metadata:
+  name: kubernetes-deployment-example
+  description: Example plan for deploying a microservice to Kubernetes
+  owner: DevOps Team
+  version: 1.0.0
+
+variables:
+  app:
+    name: example-app
+    namespace: default
+    replicas: 3
+    image: nginx:latest
+    port: 80
+  environment: production
+
+stages:
+  - name: preparation
+    description: Prepare the environment
+    jobs:
+      - name: validate-manifests
+        type: kubernetes
+        config:
+          namespace: default
+          resource: deployment
+          action: apply
+          manifest: |
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: example-app
+              namespace: default
+            spec:
+              replicas: 3
+              selector:
+                matchLabels:
+                  app: example-app
+              template:
+                metadata:
+                  labels:
+                    app: example-app
+                spec:
+                  containers:
+                  - name: example-app
+                    image: nginx:latest
+                    ports:
+                    - containerPort: 80
+          wait: false
+          timeout: 30s
+
+  - name: deployment
+    description: Deploy the application
+    requireApproval: true
+    approvers:
+      - user1@example.com
+      - user2@example.com
+    jobs:
+      - name: deploy-app
+        type: kubernetes
+        config:
+          namespace: default
+          resource: deployment
+          action: apply
+          manifest: |
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: example-app
+              namespace: default
+            spec:
+              replicas: 3
+              selector:
+                matchLabels:
+                  app: example-app
+              template:
+                metadata:
+                  labels:
+                    app: example-app
+                spec:
+                  containers:
+                  - name: example-app
+                    image: nginx:latest
+                    ports:
+                    - containerPort: 80
+          wait: true
+          timeout: 2m
+      
+      - name: deploy-service
+        type: kubernetes
+        dependsOn:
+          - deploy-app
+        config:
+          namespace: default
+          resource: service
+          action: apply
+          manifest: |
+            apiVersion: v1
+            kind: Service
+            metadata:
+              name: example-app
+              namespace: default
+            spec:
+              selector:
+                app: example-app
+              ports:
+              - port: 80
+                targetPort: 80
+              type: ClusterIP
+          wait: true
+          timeout: 1m
+
+  - name: verification
+    description: Verify the deployment
+    jobs:
+      - name: check-deployment
+        type: kubernetes
+        config:
+          namespace: default
+          resource: deployment/example-app
+          action: apply
+          wait: true
+          timeout: 1m
+
+rollback:
+  stages:
+    - name: rollback-deployment
+      description: Rollback the deployment
+      jobs:
+        - name: delete-service
+          type: kubernetes
+          config:
+            namespace: default
+            resource: service/example-app
+            action: delete
+            wait: true
+            timeout: 30s
+        
+        - name: delete-deployment
+          type: kubernetes
+          dependsOn:
+            - delete-service
+          config:
+            namespace: default
+            resource: deployment/example-app
+            action: delete
+            wait: true
+            timeout: 30s 
