@@ -134,7 +134,10 @@ func (pm *Manager) ExecutePlugin(ctx context.Context, jobType string, config map
 	
 	// Execute the plugin
 	result, err := plg.Execute(execCtx, config)
-	return result, err
+	if err != nil {
+		return nil, fmt.Errorf("plugin execution failed: %w", err)
+	}
+	return result, nil
 }
 
 // ListPlugins returns all registered plugins

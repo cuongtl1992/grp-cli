@@ -26,6 +26,18 @@ func NewLoader() *Loader {
 
 // LoadPlan loads a release plan from a file
 func (l *Loader) LoadPlan(filePath string) (*models.Plan, error) {
+	if filePath == "" {
+		return nil, fmt.Errorf("file path cannot be empty")
+	}
+
+	// Verify file exists and is readable
+	if _, err := os.Stat(filePath); err != nil {
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("plan file does not exist: %s", filePath)
+		}
+		return nil, fmt.Errorf("error accessing plan file: %w", err)
+	}
+
 	// Read the file
 	data, err := os.ReadFile(filePath)
 	if err != nil {
@@ -36,6 +48,11 @@ func (l *Loader) LoadPlan(filePath string) (*models.Plan, error) {
 	var rawPlan map[string]interface{}
 	if err := yaml.Unmarshal(data, &rawPlan); err != nil {
 		return nil, fmt.Errorf("failed to parse YAML: %w", err)
+	}
+
+	// Validate the raw plan structure before processing
+	if err := l.validateRawPlan(rawPlan); err != nil {
+		return nil, fmt.Errorf("invalid plan structure: %w", err)
 	}
 	
 	// Process includes
@@ -101,4 +118,14 @@ func (l *Loader) loadInclude(filePath string) error {
 	l.cache[key] = rawConfig
 	
 	return nil
-} 
+}
+
+func (l *Loader) validateRawPlan(raw map[string]interface{}) error {
+	required := []string{"apiVersion", "kind", "metadata"}
+	for _, field := range required {
+		if _, ok := raw[field]; !ok {
+			return fmt.Errorf("missing required field: %s", field)
+		}
+	}
+	return nil
+}

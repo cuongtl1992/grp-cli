@@ -14,8 +14,51 @@ func NewValidator() *Validator {
 	return &Validator{}
 }
 
+// checkCircularDependencies checks for circular dependencies in job dependencies
+func (v *Validator) checkCircularDependencies(jobs []models.Job) error {
+	visited := make(map[string]bool)
+	stack := make(map[string]bool)
+
+	var checkDeps func(job models.Job) error
+	checkDeps = func(job models.Job) error {
+		visited[job.Name] = true
+		stack[job.Name] = true
+
+		for _, depName := range job.DependsOn {
+			if !visited[depName] {
+				for _, j := range jobs {
+					if j.Name == depName {
+						if err := checkDeps(j); err != nil {
+							return err
+						}
+					}
+				}
+			} else if stack[depName] {
+				return fmt.Errorf("circular dependency detected: %s -> %s", job.Name, depName)
+			}
+		}
+
+		stack[job.Name] = false
+		return nil
+	}
+
+	for _, job := range jobs {
+		if !visited[job.Name] {
+			if err := checkDeps(job); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
 // ValidatePlan checks if a plan is valid
 func (v *Validator) ValidatePlan(plan *models.Plan) error {
+	if plan == nil {
+		return fmt.Errorf("plan cannot be nil")
+	}
+
 	// Check required fields
 	if plan.APIVersion == "" {
 		return fmt.Errorf("apiVersion is required")
@@ -72,6 +115,11 @@ func (v *Validator) ValidatePlan(plan *models.Plan) error {
 				}
 			}
 		}
+
+		// Check for circular dependencies in each stage
+		if err := v.checkCircularDependencies(stage.Jobs); err != nil {
+			return fmt.Errorf("in stage %s: %w", stage.Name, err)
+		}
 	}
 	
 	// Validate rollback if present
@@ -117,4 +165,4 @@ func (v *Validator) ValidatePlan(plan *models.Plan) error {
 	}
 	
 	return nil
-} 
+}

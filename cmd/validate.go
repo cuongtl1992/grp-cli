@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 
@@ -21,6 +22,14 @@ var validateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		planFile := args[0]
 		
+		 // Check if file exists before proceeding
+		if _, err := os.Stat(planFile); err != nil {
+			if os.IsNotExist(err) {
+				return fmt.Errorf("plan file not found: %s", planFile)
+			}
+			return fmt.Errorf("error accessing plan file: %w", err)
+		}
+		
 		// Create loader and validator
 		loader := config.NewLoader()
 		validator := config.NewValidator()
@@ -37,11 +46,16 @@ var validateCmd = &cobra.Command{
 		}
 		
 		fmt.Println("Plan validation successful!")
-		fmt.Printf("Plan: %s (version: %s)\n", plan.Metadata.Name, plan.Metadata.Version)
+		if plan.Metadata.Version != "" {
+			fmt.Printf("Plan: %s (version: %s)\n", plan.Metadata.Name, plan.Metadata.Version)
+		} else {
+			fmt.Printf("Plan: %s (version: not specified)\n", plan.Metadata.Name)
+		}
 		fmt.Printf("Stages: %d\n", len(plan.Stages))
 		
 		// Print stage information if verbose
-		if cmd.Flag("verbose").Value.String() == "true" {
+		verboseFlag := cmd.Flag("verbose")
+		if verboseFlag != nil && verboseFlag.Value.String() == "true" {
 			for i, stage := range plan.Stages {
 				fmt.Printf("Stage %d: %s (%d jobs)\n", i+1, stage.Name, len(stage.Jobs))
 				
@@ -61,4 +75,5 @@ var validateCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(validateCmd)
-} 
+	validateCmd.Flags().BoolP("verbose", "v", false, "Show detailed validation information")
+}
