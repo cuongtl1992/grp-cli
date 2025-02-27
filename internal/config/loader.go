@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/yourusername/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/models"
 )
 
 // Loader handles loading and parsing configuration files

@@ -223,8 +223,8 @@ import (
 
 	"github.com/spf13/cobra"
 	
-	"github.com/yourusername/releasectl/internal/engine"
-	"github.com/yourusername/releasectl/internal/config"
+	"github.com/cuongtl1992/grp-cli/internal/engine"
+	"github.com/cuongtl1992/grp-cli/internal/config"
 )
 
 // runCmd represents the run command
@@ -406,7 +406,7 @@ import (
 	
 	"gopkg.in/yaml.v3"
 	
-	"github.com/yourusername/releasectl/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/models"
 )
 
 // Loader handles loading and parsing configuration files
@@ -711,7 +711,7 @@ import (
 	"plugin"
 	"sync"
 	
-	"github.com/yourusername/releasectl/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 // Manager handles plugin discovery, loading and execution
@@ -864,11 +864,11 @@ import (
 	
 	"github.com/google/uuid"
 	
-	"github.com/yourusername/releasectl/internal/models"
-	"github.com/yourusername/releasectl/internal/plugins"
-	"github.com/yourusername/releasectl/internal/approvals"
-	"github.com/yourusername/releasectl/internal/notifications"
-	"github.com/yourusername/releasectl/internal/state"
+	"github.com/cuongtl1992/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/plugins"
+	"github.com/cuongtl1992/grp-cli/internal/approvals"
+	"github.com/cuongtl1992/grp-cli/internal/notifications"
+	"github.com/cuongtl1992/grp-cli/internal/state"
 )
 
 // ExecuteOptions contains options for plan execution
@@ -1097,8 +1097,8 @@ import (
 	"sync"
 	"time"
 	
-	"github.com/yourusername/releasectl/internal/models"
-	"github.com/yourusername/releasectl/internal/plugins"
+	"github.com/cuongtl1992/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/plugins"
 )
 
 // Executor handles the execution of jobs
@@ -1202,7 +1202,7 @@ func (e *Executor) executeJob(ctx context.Context, job models.Job) (bool, string
 package engine
 
 import (
-	"github.com/yourusername/releasectl/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/models"
 )
 
 // JobGraph represents a dependency graph of jobs
@@ -1370,9 +1370,9 @@ import (
 	"fmt"
 	"time"
 	
-	"github.com/yourusername/releasectl/internal/health"
-	"github.com/yourusername/releasectl/internal/metrics"
-	"github.com/yourusername/releasectl/internal/routes"
+	"github.com/cuongtl1992/grp-cli/internal/health"
+	"github.com/cuongtl1992/grp-cli/internal/metrics"
+	"github.com/cuongtl1992/grp-cli/internal/routes"
 )
 
 // StrategyExecutor handles deployment strategy execution
@@ -1544,9 +1544,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	
-	"github.com/yourusername/releasectl/internal/engine"
-	"github.com/yourusername/releasectl/internal/state"
-	"github.com/yourusername/releasectl/internal/plugins"
+	"github.com/cuongtl1992/grp-cli/internal/engine"
+	"github.com/cuongtl1992/grp-cli/internal/state"
+	"github.com/cuongtl1992/grp-cli/internal/plugins"
 )
 
 // Server provides a REST API for the release system
@@ -1719,7 +1719,7 @@ import (
 	"net/http"
 	"strings"
 	
-	"github.com/yourusername/releasectl/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 type APISIXGatewayPlugin struct{}
@@ -1943,7 +1943,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	
-	"github.com/yourusername/releasectl/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 type KubernetesPlugin struct{}
@@ -2126,7 +2126,7 @@ var Plugin KubernetesPlugin
    ```bash
    mkdir releasectl
    cd releasectl
-   go mod init github.com/yourusername/releasectl
+   go mod init github.com/cuongtl1992/grp-cli
    ```
 
 2. Install dependencies:
@@ -2153,7 +2153,7 @@ var Plugin KubernetesPlugin
    PLUGINS_DIR=plugins
    VERSION=$(shell git describe --tags --always --dirty)
    BUILD_TIME=$(shell date +%FT%T%z)
-   LDFLAGS=-ldflags "-X github.com/yourusername/releasectl/cmd.Version=${VERSION} -X github.com/yourusername/releasectl/cmd.BuildTime=${BUILD_TIME}"
+   LDFLAGS=-ldflags "-X github.com/cuongtl1992/grp-cli/cmd.Version=${VERSION} -X github.com/cuongtl1992/grp-cli/cmd.BuildTime=${BUILD_TIME}"
 
    build:
        go build ${LDFLAGS} -o ${BINARY} main.go

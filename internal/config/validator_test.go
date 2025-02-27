@@ -3,7 +3,7 @@ package config
 import (
 	"testing"
 
-	"github.com/yourusername/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/models"
 )
 
 func TestValidatePlan(t *testing.T) {

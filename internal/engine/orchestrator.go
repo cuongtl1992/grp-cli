@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/yourusername/grp-cli/internal/models"
-	"github.com/yourusername/grp-cli/internal/plugins"
+	"github.com/cuongtl1992/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/plugins"
 )
 
 // ExecuteOptions contains options for plan execution

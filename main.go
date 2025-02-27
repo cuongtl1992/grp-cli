@@ -1,6 +1,6 @@
 package main
 
-import "github.com/yourusername/grp-cli/cmd"
+import "github.com/cuongtl1992/grp-cli/cmd"
 
 func main() {
 	cmd.Execute()

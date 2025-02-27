@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/yourusername/grp-cli/internal/config"
+	"github.com/cuongtl1992/grp-cli/internal/config"
 )
 
 // validateCmd represents the validate command

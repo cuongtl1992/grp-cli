@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/yourusername/grp-cli/internal/models"
+	"github.com/cuongtl1992/grp-cli/internal/models"
 )
 
 // JobGraph represents a dependency graph of jobs

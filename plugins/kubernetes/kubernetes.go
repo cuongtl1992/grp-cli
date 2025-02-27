@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yourusername/grp-cli/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 // KubernetesPlugin implements the Plugin interface for Kubernetes deployments

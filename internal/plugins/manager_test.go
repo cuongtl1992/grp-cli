@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/yourusername/grp-cli/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 // MockPlugin implements the Plugin interface for testing

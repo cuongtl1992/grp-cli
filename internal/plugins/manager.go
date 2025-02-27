@@ -9,7 +9,7 @@ import (
 
 	goplugin "plugin"
 
-	"github.com/yourusername/grp-cli/pkg/plugin"
+	"github.com/cuongtl1992/grp-cli/pkg/plugin"
 )
 
 // Manager handles plugin discovery, loading and execution

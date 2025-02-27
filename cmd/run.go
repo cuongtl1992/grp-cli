@@ -10,9 +10,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/yourusername/grp-cli/internal/config"
-	"github.com/yourusername/grp-cli/internal/engine"
-	"github.com/yourusername/grp-cli/internal/plugins"
+	"github.com/cuongtl1992/grp-cli/internal/config"
+	"github.com/cuongtl1992/grp-cli/internal/engine"
+	"github.com/cuongtl1992/grp-cli/internal/plugins"
 )
 
 // runCmd represents the run command

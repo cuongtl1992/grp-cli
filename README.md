@@ -17,7 +17,7 @@ A comprehensive CLI tool for DevOps to automate and manage complex release workf
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/grp-cli.git
+git clone https://github.com/cuongtl1992/grp-cli.git
 cd grp-cli
 go build -o grp-cli
 ```
@@ -25,7 +25,7 @@ go build -o grp-cli
 ### Using Go Install
 
 ```bash
-go install github.com/yourusername/grp-cli@latest
+go install github.com/cuongtl1992/grp-cli@latest
 ```
 
 ## Usage
